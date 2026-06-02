@@ -631,6 +631,10 @@
     .gallery-grid {
       grid-template-columns: repeat(3, 1fr);
       gap: 14px;
+      max-width: 100%;
+    }
+    .gallery-item {
+      min-height: 120px;
     }
     .videos-grid { grid-template-columns: repeat(2, 1fr); }
     .test-grid { grid-template-columns: repeat(2, 1fr); }
@@ -665,13 +669,57 @@
     .bio-stat-label { font-size: 0.58rem; }
 
     /* Gallery — mobile */
+    .gallery-header {
+      max-width: 100%;
+      margin: 0 0 2rem 0;
+      display: block;
+      visibility: visible;
+    }
+
+    .gallery-header .section-label {
+      display: block;
+      visibility: visible;
+      opacity: 1;
+      color: var(--gold);
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .gallery-header .section-title {
+      display: block;
+      visibility: visible;
+      opacity: 1;
+      color: var(--ivory);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 2rem;
+    }
+
     .gallery-grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
+      max-width: 100%;
+      margin: 0;
     }
 
     .gallery-item {
       border-radius: 8px;
+      min-height: 140px;
+      width: 100%;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      background: var(--mid);
+    }
+
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .lightbox-prev,
@@ -749,9 +797,56 @@
     .section-title { font-size: clamp(1.7rem, 8vw, 2.4rem); }
 
     /* Gallery — small mobile */
+    .gallery-header {
+      max-width: 100%;
+      margin: 0 0 2rem 0;
+      display: block;
+      visibility: visible;
+    }
+
+    .gallery-header .section-label {
+      display: block;
+      visibility: visible;
+      opacity: 1;
+      color: var(--gold);
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .gallery-header .section-title {
+      display: block;
+      visibility: visible;
+      opacity: 1;
+      color: var(--ivory);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 2rem;
+    }
+
     .gallery-grid {
       grid-template-columns: 1fr;
       gap: 10px;
+      max-width: 100%;
+      margin: 0;
+    }
+
+    .gallery-item {
+      min-height: 160px;
+      width: 100%;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      background: var(--mid);
+    }
+
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .bio-stats { grid-template-columns: repeat(3, 1fr); }
