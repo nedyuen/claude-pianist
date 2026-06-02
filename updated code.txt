@@ -216,166 +216,116 @@
   #gallery { background: var(--charcoal); }
   .gallery-header { max-width: 1200px; margin: 0 auto 3rem; }
 
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 1 / 1; /* modern browsers */
+}
 
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
-
-  max-width: 1300px;
-  margin: 0 auto;
+/* Fallback for browsers without aspect-ratio support */
+@supports not (aspect-ratio: 1 / 1) {
+  .gallery-item::before {
+    content: '';
+    display: block;
+    padding-top: 100%;
+  }
+  .gallery-item img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .gallery-item {
-  aspect-ratio: 1 / 1;   /* PERFECT square */
-  overflow: hidden;
-  border-radius: 8px;
-
-  cursor: pointer;
-  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
+  .gallery-item:hover img { transform: scale(1.05); }
+  .gallery-item::after {
+    content: attr(data-caption);
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(14,13,11,0.85));
+    padding: 2rem 1rem 0.8rem;
+    font-size: 0.7rem; letter-spacing: 0.12em; color: var(--gold-light);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .gallery-item:hover::after { opacity: 1; }
 
-.gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;   /* crops image cleanly */
-
-  display: block;
-
-  transition: transform .45s ease, filter .45s ease;
-}
-.gallery-item:hover img {
-  transform: scale(1.05);
+.gallery-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
 }
 
 /* ── LIGHTBOX ── */
-
 .lightbox {
   position: fixed;
   inset: 0;
-
-  background: rgba(0,0,0,.96);
-
+  background: rgba(0,0,0,0.92);
   display: flex;
   align-items: center;
   justify-content: center;
-
   z-index: 9999;
+  flex-direction: column;
 }
 
-.hidden {
+.lightbox.hidden {
   display: none;
 }
 
-.lightbox-content {
-  max-width: 90vw;
-  text-align: center;
-}
-
 .lightbox-img {
-  max-width: 90vw;
-  max-height: 75vh;
-
-  opacity: 1;
-
-  transition:
-    opacity .25s ease,
-    transform .25s ease;
-
-  border-radius: 8px;
+  max-width: 90%;
+  max-height: 85vh;
+  border-radius: 6px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
 }
 
-.lightbox-img.fade {
-  opacity: 0;
-}
-
-.lightbox-caption {
-  margin-top: 15px;
-
-  color: white;
-
-  font-size: 1rem;
-}
-
-.lightbox-counter {
-  margin-top: 8px;
-
-  color: rgba(255,255,255,.6);
-
-  font-size: .85rem;
-}
-
+/* buttons */
 .lightbox-close,
 .lightbox-prev,
 .lightbox-next {
   position: absolute;
-
+  background: none;
   border: none;
-
-  background: rgba(255,255,255,.12);
-
   color: white;
-
+  font-size: 2rem;
   cursor: pointer;
-
-  width: 50px;
-  height: 50px;
-
-  border-radius: 50%;
+  user-select: none;
 }
 
 .lightbox-close {
   top: 20px;
-  right: 20px;
-
-  font-size: 2rem;
+  right: 30px;
+  font-size: 2.5rem;
 }
 
 .lightbox-prev {
-  left: 30px;
+  left: 20px;
   top: 50%;
   transform: translateY(-50%);
 }
 
 .lightbox-next {
-  right: 30px;
+  right: 20px;
   top: 50%;
   transform: translateY(-50%);
 }
-.lightbox-thumbs {
-  display: flex;
 
-  justify-content: center;
-
-  gap: 8px;
-
-  margin-top: 20px;
-
-  overflow-x: auto;
-
-  padding-bottom: 10px;
+.lightbox-counter {
+  position: absolute;
+  bottom: 20px;
+  color: white;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
 }
 
-.lightbox-thumb {
-  width: 60px;
-  height: 60px;
 
-  object-fit: cover;
 
-  border-radius: 4px;
-
-  opacity: .5;
-
-  cursor: pointer;
-
-  transition: .25s;
-}
-
-.lightbox-thumb.active {
-  opacity: 1;
-  outline: 2px solid white;
-}
 
   /* ── VIDEOS ── */
   #videos { background: var(--dark); }
@@ -759,196 +709,61 @@
   </div>
   <div class="gallery-grid">
 
-<div class="gallery-item">
-  <img
-    src="https://i.postimg.cc/wjJk7S8k/A1.jpg"
-    alt="Live performance"
-    data-caption="placeholder caption"
-    loading="lazy">
-</div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/wjJk7S8k/A1.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/tJxsBGzc/A2.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/7h25KrNW/A3.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/7h25KrNB/B1.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/Hnyr61tv/B2.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/7brfctBB/B3.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/141fT7WY/B4.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/jCYL938M/B5.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/MXJv43sP/B6.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/nMfC5SdW/B7.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/3WQd6fSh/B8.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/dDcLXNHM/B9.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/xqVc7pxD/B10.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/xqVc7pxV/C1.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/s1Cv8H6R/C2-092018.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/F1X7qCWN/C3-092018.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/jCYL93gS/C4-112018.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/XX6ph1Hn/C5-122019.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/WtchKYWb/C6-092021.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/mhWtqpXD/C7.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/66y1fWDY/C8.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/YjBhVDn0/D1.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/BZXwBSdh/D2.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/QNHnJ8R4/D3.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/jqLk4xpV/D4.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/dQLSjsbF/D5.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/KcRsDG6S/D6.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/zDVPFz99/E1.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/QNwY4LDj/E2.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/J7Gd5rft/E3.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/NGSCJhtY/F1.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/05FXWgvj/F2.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/ZY2s7km0/F3.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/QNwY4LDH/F4.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/tRwvS0bR/F5.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/G3Vg70RD/F6.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/y6tpQqKF/F7.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/qBSDbfrX/F8.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/fWpq24sf/F9.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/kXS1LjM8/G1.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/ncmRNdVB/G2.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/fTd21HW9/G3.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/L6PCGy4T/G4.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/dtCHgWQn/G5.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/tC6S8rRv/G6.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/qMKbWmBb/G7.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/Qx74v6Nw/G8.jpg" data-caption="placeholder"></div>
+<div class="gallery-item" data-bg="https://i.postimg.cc/jdfgB8qp/G9.jpg" data-caption="placeholder"></div>
 
-<div class="gallery-item">
-  <img
-    src="https://i.postimg.cc/tJxsBGzc/A2.jpg"
-    alt="Backstage"
-    data-caption="placeholder caption"
-    loading="lazy">
-</div>
+<div class="gallery-item" data-bg="https://www.bohemeart.com/images/vivianchan/016.jpg" data-caption="placeholder"></div>
 
-<div class="gallery-item">
-  <img
-    src="https://i.postimg.cc/7h25KrNW/A3.jpg"
-    alt="Studio"
-    data-caption="placeholder caption"
-    loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/7h25KrNB/B1.jpg" alt="B1" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/Hnyr61tv/B2.jpg" alt="B2" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/7brfctBB/B3.jpg" alt="B3" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/141fT7WY/B4.jpg" alt="B4" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/jCYL938M/B5.jpg" alt="B5" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/MXJv43sP/B6.jpg" alt="B6" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/nMfC5SdW/B7.jpg" alt="B7" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/3WQd6fSh/B8.jpg" alt="B8" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/dDcLXNHM/B9.jpg" alt="B9" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/xqVc7pxD/B10.jpg" alt="B10" data-caption="placeholder caption" loading="lazy">
-</div>
-
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/xqVc7pxV/C1.jpg" alt="C1" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/s1Cv8H6R/C2-092018.jpg" alt="C2-092018" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/F1X7qCWN/C3-092018.jpg" alt="C3-092018" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/jCYL93gS/C4-112018.jpg" alt="C4-112018" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/XX6ph1Hn/C5-122019.jpg" alt="C5-122019" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/WtchKYWb/C6-092021.jpg" alt="C6-092021" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/mhWtqpXD/C7.jpg" alt="C7" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/66y1fWDY/C8.jpg" alt="C8" data-caption="placeholder caption" loading="lazy">
-</div>
-
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/YjBhVDn0/D1.jpg" alt="D1" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/BZXwBSdh/D2.jpg" alt="D2" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/QNHnJ8R4/D3.jpg" alt="D3" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/jqLk4xpV/D4.jpg" alt="D4" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/dQLSjsbF/D5.jpg" alt="D5" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/KcRsDG6S/D6.jpg" alt="D6" data-caption="placeholder caption" loading="lazy">
-</div>
-
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/zDVPFz99/E1.jpg" alt="E1" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/QNwY4LDj/E2.jpg" alt="E2" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/J7Gd5rft/E3.jpg" alt="E3" data-caption="placeholder caption" loading="lazy">
-</div>
-
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/NGSCJhtY/F1.jpg" alt="F1" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/05FXWgvj/F2.jpg" alt="F2" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/ZY2s7km0/F3.jpg" alt="F3" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/QNwY4LDH/F4.jpg" alt="F4" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/tRwvS0bR/F5.jpg" alt="F5" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/G3Vg70RD/F6.jpg" alt="F6" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/y6tpQqKF/F7.jpg" alt="F7" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/qBSDbfrX/F8.jpg" alt="F8" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/fWpq24sf/F9.jpg" alt="F9" data-caption="placeholder caption" loading="lazy">
-</div>
-
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/kXS1LjM8/G1.jpg" alt="G1" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/ncmRNdVB/G2.jpg" alt="G2" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/fTd21HW9/G3.jpg" alt="G3" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/L6PCGy4T/G4.jpg" alt="G4" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/dtCHgWQn/G5.jpg" alt="G5" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/tC6S8rRv/G6.jpg" alt="G6" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/qMKbWmBb/G7.jpg" alt="G7" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/Qx74v6Nw/G8.jpg" alt="G8" data-caption="placeholder caption" loading="lazy">
-</div>
-<div class="gallery-item">
-  <img src="https://i.postimg.cc/jdfgB8qp/G9.jpg" alt="G9" data-caption="placeholder caption" loading="lazy">
-</div>
 
   </div>
 </section>
 
-<!-- LIGHTBOX -->
-
-<div id="lightbox" class="lightbox hidden">
-
-  <button class="lightbox-close">&times;</button>
-
-  <button class="lightbox-prev">‹</button>
-
-  <div class="lightbox-content">
-
-    <img class="lightbox-img" alt="">
-
-    <div class="lightbox-caption"></div>
-
-    <div class="lightbox-counter"></div>
-
-    <div class="lightbox-thumbs"></div>
-
-  </div>
-
-  <button class="lightbox-next">›</button>
-
-</div>
 <!-- VIDEOS -->
 <section id="videos">
   <div class="videos-header">
@@ -1981,20 +1796,11 @@
 </footer>
 
 <div id="lightbox" class="lightbox hidden">
-
   <button class="lightbox-close">&times;</button>
-
-  <button class="lightbox-prev">‹</button>
-
-  <div class="lightbox-content">
-    <img class="lightbox-img" alt="">
-    <div class="lightbox-caption"></div>
-    <div class="lightbox-counter"></div>
-    <div class="lightbox-thumbs"></div>
-  </div>
-
-  <button class="lightbox-next">›</button>
-
+  <button class="lightbox-prev">&#10094;</button>
+  <img class="lightbox-img" src="" alt="expanded image">
+  <button class="lightbox-next">&#10095;</button>
+  <div class="lightbox-counter"></div>
 </div>
 
 <script>
@@ -2064,240 +1870,64 @@ document.querySelectorAll('.gallery-item[data-bg]').forEach(el => {
     sec.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
     observer.observe(sec);
   });
-
-
-
-
-const images = [...document.querySelectorAll('.gallery-item img')];
-
+const items = Array.from(document.querySelectorAll('.gallery-item[data-bg]'));
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.querySelector('.lightbox-img');
-const caption = document.querySelector('.lightbox-caption');
 const counter = document.querySelector('.lightbox-counter');
-const thumbs = document.querySelector('.lightbox-thumbs');
+let currentIndex = 0;
 
-let current = 0;
-
-/* --------------------------
-   BUILD THUMB STRIP
--------------------------- */
-
-images.forEach((img, index) => {
-
-  const thumb = document.createElement('img');
-
-  thumb.src = img.src;
-  thumb.className = 'lightbox-thumb';
-
-  thumb.addEventListener('click', () => {
-    current = index;
-    updateLightbox();
-  });
-
-  thumbs.appendChild(thumb);
-});
-
-/* --------------------------
-   OPEN
--------------------------- */
-
-images.forEach((img, index) => {
-
-  img.addEventListener('click', () => {
-
-    current = index;
-
-    lightbox.classList.remove('hidden');
-
-    document.body.style.overflow = 'hidden';
-
-    updateLightbox();
+// open lightbox
+items.forEach((item, index) => {
+  item.addEventListener('click', () => {
+    currentIndex = index;
+    openLightbox();
   });
 });
 
-/* --------------------------
-   CLOSE
--------------------------- */
+function openLightbox() {
+  lightbox.classList.remove('hidden');
+  updateImage();
+}
 
+// update image
+function updateImage() {
+  const item = items[currentIndex];
+  lightboxImg.src = item.dataset.bg;
+  counter.textContent = `${currentIndex + 1} / ${items.length}`;
+}
+
+// navigation
+document.querySelector('.lightbox-next').addEventListener('click', () => {
+  currentIndex = (currentIndex + 1) % items.length;
+  updateImage();
+});
+document.querySelector('.lightbox-prev').addEventListener('click', () => {
+  currentIndex = (currentIndex - 1 + items.length) % items.length;
+  updateImage();
+});
+
+// close
+document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) closeLightbox();
+});
 function closeLightbox() {
-
   lightbox.classList.add('hidden');
-
-  document.body.style.overflow = '';
 }
 
-document
-  .querySelector('.lightbox-close')
-  .addEventListener('click', closeLightbox);
-
-/* --------------------------
-   UPDATE
--------------------------- */
-
-function updateLightbox() {
-
-  const img = images[current];
-
-  lightboxImg.classList.add('fade');
-
-  setTimeout(() => {
-
-    lightboxImg.src = img.src;
-    lightboxImg.alt = img.alt;
-
-    caption.textContent =
-      img.dataset.caption || '';
-
-    counter.textContent =
-      `${current + 1} / ${images.length}`;
-
-    lightboxImg.classList.remove('fade');
-
-  }, 150);
-
-  updateThumbs();
-
-  preload();
-}
-
-/* --------------------------
-   THUMB STATE
--------------------------- */
-
-function updateThumbs() {
-
-  document
-    .querySelectorAll('.lightbox-thumb')
-    .forEach((thumb, i) => {
-
-      thumb.classList.toggle(
-        'active',
-        i === current
-      );
-
-      if (i === current) {
-        thumb.scrollIntoView({
-          inline: 'center',
-          behavior: 'smooth'
-        });
-      }
-    });
-}
-
-/* --------------------------
-   NAVIGATION
--------------------------- */
-
-function next() {
-
-  current =
-    (current + 1) % images.length;
-
-  updateLightbox();
-}
-
-function prev() {
-
-  current =
-    (current - 1 + images.length)
-    % images.length;
-
-  updateLightbox();
-}
-
-document
-  .querySelector('.lightbox-next')
-  .addEventListener('click', next);
-
-document
-  .querySelector('.lightbox-prev')
-  .addEventListener('click', prev);
-
-/* --------------------------
-   PRELOAD
--------------------------- */
-
-function preload() {
-
-  const nextIndex =
-    (current + 1) % images.length;
-
-  const prevIndex =
-    (current - 1 + images.length)
-    % images.length;
-
-  new Image().src =
-    images[nextIndex].src;
-
-  new Image().src =
-    images[prevIndex].src;
-}
-
-/* --------------------------
-   CLICK OUTSIDE
--------------------------- */
-
-lightbox.addEventListener('click', e => {
-
-  if (e.target === lightbox)
-    closeLightbox();
+// keyboard support
+document.addEventListener('keydown', (e) => {
+  if (lightbox.classList.contains('hidden')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowRight') {
+    currentIndex = (currentIndex + 1) % items.length;
+    updateImage();
+  }
+  if (e.key === 'ArrowLeft') {
+    currentIndex = (currentIndex - 1 + items.length) % items.length;
+    updateImage();
+  }
 });
-
-/* --------------------------
-   KEYBOARD
--------------------------- */
-
-document.addEventListener(
-  'keydown',
-  e => {
-
-    if (
-      lightbox.classList.contains(
-        'hidden'
-      )
-    ) return;
-
-    if (e.key === 'Escape')
-      closeLightbox();
-
-    if (e.key === 'ArrowRight')
-      next();
-
-    if (e.key === 'ArrowLeft')
-      prev();
-  }
-);
-
-/* --------------------------
-   MOBILE SWIPE
--------------------------- */
-
-let startX = 0;
-
-lightboxImg.addEventListener(
-  'touchstart',
-  e => {
-
-    startX =
-      e.changedTouches[0].screenX;
-  }
-);
-
-lightboxImg.addEventListener(
-  'touchend',
-  e => {
-
-    const endX =
-      e.changedTouches[0].screenX;
-
-    const diff =
-      startX - endX;
-
-    if (diff > 50) next();
-
-    if (diff < -50) prev();
-  }
-);
 </script>
 
 </body>
