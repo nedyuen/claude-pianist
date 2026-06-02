@@ -219,17 +219,11 @@
     max-width: 1200px; margin: 0 auto;
     display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px;
   }
-  .gallery-item { overflow: hidden; position: relative; cursor: pointer; aspect-ratio: 1 / 1;}
-.gallery-item img {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  inset: 0;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.6s ease, filter 0.4s;
-  filter: sepia(10%);
-}
+  .gallery-item { overflow: hidden; position: relative; cursor: pointer; }
+  .gallery-item img {
+    width: 100%; height: 100%; display: block; object-fit: cover;
+    transition: transform 0.6s ease, filter 0.4s; filter: sepia(10%);
+  }
   .gallery-item:hover img { transform: scale(1.05); filter: sepia(0%); }
   .gallery-item::after {
     content: attr(data-caption);
@@ -240,7 +234,16 @@
     opacity: 0; transition: opacity 0.3s;
   }
   .gallery-item:hover::after { opacity: 1; }
-
+<!-- This is a comment
+  .g1 { grid-column: span 5; grid-row: span 2; height: 420px; }
+  .g2 { grid-column: span 4; height: 200px; }
+  .g3 { grid-column: span 3; height: 200px; }
+  .g4 { grid-column: span 4; height: 210px; }
+  .g5 { grid-column: span 3; height: 210px; }
+  .g6 { grid-column: span 5; height: 260px; }
+  .g7 { grid-column: span 4; height: 260px; }
+  .g8 { grid-column: span 3; height: 260px; }
+ -->
 
 .gallery-grid {
   max-width: 1200px;
@@ -250,6 +253,12 @@
   gap: 12px;
 }
 
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 1 / 1;
+}
 
 /* ── LIGHTBOX ── */
 .lightbox {
