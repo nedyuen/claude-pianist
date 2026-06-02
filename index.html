@@ -229,21 +229,23 @@
 
 /* ── FIXED SQUARE TILE ── */
 .gallery-item {
-  aspect-ratio: 1 / 1;
+  width: 100%;
+  position: relative;
+
+  padding-top: 100%; /* fallback square that NEVER fails */
 
   overflow: hidden;
   border-radius: 8px;
 
   cursor: pointer;
-
   background: #111;
-  position: relative;
 }
 
 /* ── FIXED IMAGE (WEBVIEW SAFE) ── */
 .gallery-item img {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
 
   width: 100%;
   height: 100%;
@@ -252,11 +254,8 @@
 
   display: block;
 
-  transform: translateZ(0); /* helps mobile rendering */
-
-  transition: transform .35s ease;
+  transform: translateZ(0);
 }
-
 /* hover effect */
 .gallery-item:hover img {
   transform: scale(1.05);
