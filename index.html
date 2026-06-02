@@ -233,7 +233,6 @@
   position: relative;
 
   padding-top: 100%; /* fallback square that NEVER fails */
-  min-height: 160px;
 
   overflow: hidden;
   border-radius: 8px;
@@ -610,17 +609,33 @@
     .bio-stat-num { font-size: 1.8rem; }
     .bio-stat-label { font-size: 0.58rem; }
 
-    /* Gallery — 2-col simple grid */
+    /* Gallery — ensure visibility */
+    #gallery { 
+      background: var(--charcoal); 
+      display: block;
+      visibility: visible;
+    }
+    .gallery-header {
+      max-width: 100%;
+      padding: 0;
+      margin: 0 auto 1.5rem;
+    }
+    .gallery-header .section-label {
+      display: block;
+      visibility: visible;
+      opacity: 1;
+    }
+    .gallery-header .section-title {
+      display: block;
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* Gallery — completely override for mobile */
     .gallery-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
     }
-    .gallery-item {
-      min-height: 160px;
-    }
-    .g1, .g2, .g3, .g4, .g5, .g6, .g7, .g8 {
-      grid-column: span 1; grid-row: span 1;
-    }
-    .g1 { grid-column: span 2; min-height: 220px; }
 
     /* Videos — single col */
     .videos-grid { grid-template-columns: 1fr; gap: 1.5rem; }
@@ -670,7 +685,28 @@
 
     .section-title { font-size: clamp(1.7rem, 8vw, 2.4rem); }
 
-    .gallery-grid { grid-template-columns: 1fr; gap: 6px; }
+    /* Gallery */
+    .gallery-header {
+      max-width: 100%;
+      padding: 0;
+      margin: 0 auto 1.5rem;
+    }
+    .gallery-header .section-label {
+      display: block;
+      visibility: visible;
+      opacity: 1;
+    }
+    .gallery-header .section-title {
+      display: block;
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .gallery-grid { 
+      grid-template-columns: 1fr; 
+      gap: 6px; 
+    }
+
     .gallery-item {
       min-height: 200px;
     }
