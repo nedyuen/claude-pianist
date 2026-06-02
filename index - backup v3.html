@@ -219,28 +219,7 @@
     max-width: 1200px; margin: 0 auto;
     display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px;
   }
-.gallery-item {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  aspect-ratio: 1 / 1; /* modern browsers */
-}
-
-/* Fallback for browsers without aspect-ratio support */
-@supports not (aspect-ratio: 1 / 1) {
-  .gallery-item::before {
-    content: '';
-    display: block;
-    padding-top: 100%;
-  }
-  .gallery-item img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
-}
-
+  .gallery-item { overflow: hidden; position: relative; cursor: pointer; aspect-ratio: 1 / 1;}
 .gallery-item img {
   width: 100%;
   height: 100%;
