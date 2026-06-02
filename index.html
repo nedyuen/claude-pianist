@@ -215,10 +215,7 @@
   /* ── GALLERY ── */
   #gallery { background: var(--charcoal); }
   .gallery-header { max-width: 1200px; margin: 0 auto 3rem; }
-  .gallery-grid {
-    max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px;
-  }
+
 .gallery-item {
   position: relative;
   overflow: hidden;
@@ -258,7 +255,6 @@
   }
   .gallery-item:hover::after { opacity: 1; }
 
-
 .gallery-grid {
   max-width: 1200px;
   margin: 0 auto;
@@ -266,7 +262,6 @@
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 12px;
 }
-
 
 /* ── LIGHTBOX ── */
 .lightbox {
@@ -863,6 +858,9 @@
 </div>
 <div class="gallery-item" data-caption="Placeholder caption">
   <img class="gallery-img" src="https://i.postimg.cc/jdfgB8qp/G9.jpg" alt="Caption">
+</div>
+<div class="gallery-item" data-caption="Placeholder caption">
+  <img class="gallery-img" src="https://www.bohemeart.com/images/vivianchan/016.jpg" alt="Caption">
 </div>
 
 
@@ -1972,9 +1970,7 @@
     sec.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
     observer.observe(sec);
   });
-</script>
 
-<script>
 const images = Array.from(document.querySelectorAll('.gallery-item img'));
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.querySelector('.lightbox-img');
