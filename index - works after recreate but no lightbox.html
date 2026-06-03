@@ -418,25 +418,58 @@
   }
   .gallery-item:hover::after { opacity: 1; }
 
-  /* Image Modal */
-  .image-modal {
+  /* Lightbox */
+  #lightbox {
     position: fixed; inset: 0; z-index: 300;
-    background: rgba(14,13,11,0.95); backdrop-filter: blur(4px);
-    display: flex; align-items: center; justify-content: center;
-    opacity: 1; visibility: visible; transition: opacity 0.3s, visibility 0.3s;
+    background: rgba(14,13,11,0.98);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    opacity: 1; visibility: visible; transition: opacity 0.3s, visibility 0.3s; padding: 2rem;
   }
-  .image-modal.hidden {
+  #lightbox.hidden {
     opacity: 0; visibility: hidden; pointer-events: none;
   }
-  .image-modal-close {
-    position: absolute; top: 2rem; right: 2rem;
-    font-size: 2.5rem; color: var(--gold); cursor: pointer;
-    transition: color 0.2s;
+  .lightbox-inner { display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; }
+  .lightbox-viewer { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; }
+  .lightbox-img {
+    max-width: 90%; max-height: 70vh; object-fit: contain;
+    transition: opacity 0.2s;
   }
-  .image-modal-close:hover { color: var(--gold-light); }
-  .image-modal-img {
-    max-width: 90%; max-height: 90vh; object-fit: contain;
+  .lightbox-img.fade { opacity: 0; }
+  .lightbox-controls {
+    display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+    margin-bottom: 1.5rem;
   }
+  .lightbox-btn {
+    width: 40px; height: 40px; border: 1px solid var(--border);
+    background: none; color: var(--gold); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; transition: border-color 0.2s, background 0.2s;
+  }
+  .lightbox-btn:hover { border-color: var(--gold); background: rgba(201,168,76,0.1); }
+  .lightbox-close { position: absolute; top: 2rem; right: 2rem; }
+  .lightbox-info { text-align: center; margin-top: 1rem; }
+  .lightbox-caption {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; color: var(--gold-light); margin-bottom: 0.5rem;
+  }
+  .lightbox-counter {
+    font-size: 0.8rem; color: var(--muted); letter-spacing: 0.1em;
+  }
+  .lightbox-thumbs {
+    display: flex; gap: 0.75rem; justify-content: center;
+    overflow-x: auto; max-width: 100%; margin-top: 1.5rem;
+    padding: 0 2rem; scroll-behavior: smooth;
+  }
+  .lightbox-thumb {
+    width: 60px; height: 60px; object-fit: cover;
+    border: 1px solid var(--border); cursor: pointer;
+    opacity: 0.5; transition: opacity 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+  }
+  .lightbox-thumb.active {
+    opacity: 1; border-color: var(--gold);
+  }
+  .lightbox-thumb:hover { opacity: 0.75; }
 
   /* ════════════════════════════════
      RESPONSIVE BREAKPOINTS
@@ -1809,10 +1842,23 @@
   </div>
 </footer>
 
-<!-- IMAGE MODAL -->
-<div id="imageModal" class="image-modal hidden">
-  <span class="image-modal-close">&times;</span>
-  <img class="image-modal-img" src="" alt="">
+<!-- LIGHTBOX -->
+<div id="lightbox" class="hidden">
+  <div class="lightbox-inner">
+    <button class="lightbox-btn lightbox-close">✕</button>
+    <div class="lightbox-viewer">
+      <img src="" alt="" class="lightbox-img">
+    </div>
+    <div class="lightbox-info">
+      <div class="lightbox-caption"></div>
+      <div class="lightbox-counter"></div>
+    </div>
+    <div class="lightbox-controls">
+      <button class="lightbox-btn lightbox-prev">‹</button>
+      <button class="lightbox-btn lightbox-next">›</button>
+    </div>
+    <div class="lightbox-thumbs"></div>
+  </div>
 </div>
 
 <script>
@@ -1885,62 +1931,230 @@ document.querySelectorAll('.gallery-item[data-bg]').forEach(el => {
 
 
 
-// Simple Image Modal
-const modal = document.getElementById('imageModal');
-const modalImg = document.querySelector('.image-modal-img');
-const closeBtn = document.querySelector('.image-modal-close');
 
-console.log('Modal:', modal);
-console.log('Modal Img:', modalImg);
-console.log('Close Btn:', closeBtn);
+const images = [...document.querySelectorAll('.gallery-item img')];
 
-if (modal && modalImg) {
-  // Click on gallery items to open modal
-  const galleryItems = document.querySelectorAll('.gallery-item');
-  console.log('Found gallery items:', galleryItems.length);
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.querySelector('.lightbox-img');
+const caption = document.querySelector('.lightbox-caption');
+const counter = document.querySelector('.lightbox-counter');
+const thumbs = document.querySelector('.lightbox-thumbs');
 
-  galleryItems.forEach(item => {
-    item.style.cursor = 'pointer';
-    item.addEventListener('click', function(e) {
-      const img = this.querySelector('img');
-      if (img) {
-        console.log('Gallery item clicked, opening image:', img.src);
-        modal.classList.remove('hidden');
-        modalImg.src = img.src;
-        document.body.style.overflow = 'hidden';
+let current = 0;
+
+/* --------------------------
+   BUILD THUMB STRIP
+-------------------------- */
+
+images.forEach((img, index) => {
+
+  const thumb = document.createElement('img');
+
+  thumb.src = img.src;
+  thumb.className = 'lightbox-thumb';
+
+  thumb.addEventListener('click', () => {
+    current = index;
+    updateLightbox();
+  });
+
+  thumbs.appendChild(thumb);
+});
+
+/* --------------------------
+   OPEN
+-------------------------- */
+
+images.forEach((img, index) => {
+
+  img.addEventListener('click', () => {
+
+    current = index;
+
+    lightbox.classList.remove('hidden');
+
+    document.body.style.overflow = 'hidden';
+
+    updateLightbox();
+  });
+});
+
+/* --------------------------
+   CLOSE
+-------------------------- */
+
+function closeLightbox() {
+
+  lightbox.classList.add('hidden');
+
+  document.body.style.overflow = '';
+}
+
+const closeBtn = document.querySelector('.lightbox-close');
+if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+
+const nextBtn = document.querySelector('.lightbox-next');
+if (nextBtn) nextBtn.addEventListener('click', next);
+
+const prevBtn = document.querySelector('.lightbox-prev');
+if (prevBtn) prevBtn.addEventListener('click', prev);
+
+lightbox.addEventListener('click', e => {
+  if (e.target === lightbox) closeLightbox();
+});
+
+/* --------------------------
+   UPDATE
+-------------------------- */
+
+function updateLightbox() {
+
+  const img = images[current];
+
+  lightboxImg.classList.add('fade');
+
+  setTimeout(() => {
+
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+
+    caption.textContent =
+      img.dataset.caption || '';
+
+    counter.textContent =
+      `${current + 1} / ${images.length}`;
+
+    lightboxImg.classList.remove('fade');
+
+  }, 150);
+
+  updateThumbs();
+
+  preload();
+}
+
+/* --------------------------
+   THUMB STATE
+-------------------------- */
+
+function updateThumbs() {
+
+  document
+    .querySelectorAll('.lightbox-thumb')
+    .forEach((thumb, i) => {
+
+      thumb.classList.toggle(
+        'active',
+        i === current
+      );
+
+      if (i === current) {
+        thumb.scrollIntoView({
+          inline: 'center',
+          behavior: 'smooth'
+        });
       }
     });
-  });
-
-  // Close button
-  if (closeBtn) {
-    closeBtn.addEventListener('click', function() {
-      console.log('Close button clicked');
-      modal.classList.add('hidden');
-      document.body.style.overflow = '';
-    });
-  }
-
-  // Click outside to close
-  modal.addEventListener('click', function(e) {
-    if (e.target === this) {
-      console.log('Clicked outside modal');
-      this.classList.add('hidden');
-      document.body.style.overflow = '';
-    }
-  });
-
-  // Escape key to close
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-      console.log('Escape key pressed');
-      modal.classList.add('hidden');
-      document.body.style.overflow = '';
-    }
-  });
-} else {
-  console.error('Modal or image elements not found');
 }
+
+/* --------------------------
+   NAVIGATION
+-------------------------- */
+
+function next() {
+
+  current =
+    (current + 1) % images.length;
+
+  updateLightbox();
+}
+
+function prev() {
+
+  current =
+    (current - 1 + images.length)
+    % images.length;
+
+  updateLightbox();
+}
+
+
+/* --------------------------
+   PRELOAD
+-------------------------- */
+
+function preload() {
+
+  const nextIndex =
+    (current + 1) % images.length;
+
+  const prevIndex =
+    (current - 1 + images.length)
+    % images.length;
+
+  new Image().src =
+    images[nextIndex].src;
+
+  new Image().src =
+    images[prevIndex].src;
+}
+
+
+/* --------------------------
+   KEYBOARD
+-------------------------- */
+
+document.addEventListener(
+  'keydown',
+  e => {
+
+    if (
+      lightbox.classList.contains(
+        'hidden'
+      )
+    ) return;
+
+    if (e.key === 'Escape')
+      closeLightbox();
+
+    if (e.key === 'ArrowRight')
+      next();
+
+    if (e.key === 'ArrowLeft')
+      prev();
+  }
+);
+
+/* --------------------------
+   MOBILE SWIPE
+-------------------------- */
+
+let startX = 0;
+
+lightboxImg.addEventListener(
+  'touchstart',
+  e => {
+
+    startX =
+      e.changedTouches[0].screenX;
+  }
+);
+
+lightboxImg.addEventListener(
+  'touchend',
+  e => {
+
+    const endX =
+      e.changedTouches[0].screenX;
+
+    const diff =
+      startX - endX;
+
+    if (diff > 50) next();
+
+    if (diff < -50) prev();
+  }
+);
 
 </script>
 
