@@ -212,7 +212,235 @@
   }
   .bio-stat-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
 
-/* ── VIDEOS ── */
+  /* ── GALLERY ── */
+  #gallery { background: var(--charcoal); }
+  .gallery-header { max-width: 1300px; margin: 0 auto 4rem; }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .gallery-item {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 12px;
+    cursor: pointer;
+    background: var(--mid);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s, transform 0.3s;
+  }
+
+  .gallery-item:hover {
+    box-shadow: 0 8px 24px rgba(201, 168, 76, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.08);
+  }
+
+  .gallery-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0) 0%, rgba(201, 168, 76, 0.08) 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+
+  .gallery-item:hover::after {
+    opacity: 1;
+  }
+
+  /* ── LIGHTBOX ── */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(14, 13, 11, 0.98);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .lightbox:not(.hidden) {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .lightbox-content {
+    max-width: 90vw;
+    max-height: 90vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .lightbox-img {
+    max-width: 90vw;
+    max-height: 75vh;
+    opacity: 1;
+    transition: opacity 0.25s ease;
+    border-radius: 12px;
+    display: block;
+  }
+
+  .lightbox-img.fade {
+    opacity: 0;
+  }
+
+  .lightbox-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .lightbox-caption {
+    color: var(--ivory);
+    font-size: 1rem;
+    font-weight: 400;
+    max-width: 600px;
+  }
+
+  .lightbox-counter {
+    color: var(--muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+  }
+
+  .lightbox-controls {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .lightbox-close,
+  .lightbox-prev,
+  .lightbox-next {
+    position: absolute;
+    border: none;
+    background: rgba(201, 168, 76, 0.1);
+    color: var(--ivory);
+    cursor: pointer;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+    border: 1px solid rgba(201, 168, 76, 0.2);
+  }
+
+  .lightbox-close:hover,
+  .lightbox-prev:hover,
+  .lightbox-next:hover {
+    background: rgba(201, 168, 76, 0.2);
+    transform: scale(1.05);
+  }
+
+  .lightbox-close {
+    top: 2rem;
+    right: 2rem;
+  }
+
+  .lightbox-prev {
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    position: absolute;
+  }
+
+  .lightbox-prev:hover {
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  .lightbox-next {
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    position: absolute;
+  }
+
+  .lightbox-next:hover {
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  .lightbox-thumbs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 2rem 0.75rem 2rem;
+    max-width: 90vw;
+  }
+
+  .lightbox-thumbs::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .lightbox-thumbs::-webkit-scrollbar-track {
+    background: rgba(201, 168, 76, 0.1);
+    border-radius: 2px;
+  }
+
+  .lightbox-thumbs::-webkit-scrollbar-thumb {
+    background: rgba(201, 168, 76, 0.4);
+    border-radius: 2px;
+  }
+
+  .lightbox-thumb {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 6px;
+    opacity: 0.6;
+    cursor: pointer;
+    transition: opacity 0.25s, transform 0.25s, border-color 0.25s;
+    border: 2px solid transparent;
+    flex-shrink: 0;
+  }
+
+  .lightbox-thumb:hover {
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
+
+  .lightbox-thumb.active {
+    opacity: 1;
+    border-color: var(--gold);
+    transform: scale(1.05);
+  }
+
+  /* ── VIDEOS ── */
   #videos { background: var(--dark); }
   .videos-header { max-width: 1200px; margin: 0 auto 3rem; }
   .videos-grid {
@@ -388,87 +616,6 @@
   }
   .footer-social a:hover { color: var(--gold); }
 
-  /* Gallery */
-  #gallery { background: var(--charcoal); }
-  .gallery-layout { max-width: 1200px; margin: 0 auto; }
-  .gallery-header { margin-bottom: 3rem; }
-  .gallery-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
-  }
-  .gallery-item {
-    position: relative; aspect-ratio: 1; overflow: hidden;
-    border: 1px solid var(--border); cursor: pointer;
-    transition: border-color 0.3s, transform 0.3s;
-    background-size: cover; background-position: center;
-  }
-  .gallery-item:hover {
-    border-color: var(--gold); transform: scale(1.02);
-  }
-  .gallery-item img {
-    width: 100%; height: 100%; object-fit: cover;
-    transition: transform 0.4s ease;
-  }
-  .gallery-item:hover img {
-    transform: scale(1.08);
-  }
-  .gallery-item::after {
-    content: ''; position: absolute; inset: 0;
-    background: rgba(201,168,76,0.1); opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .gallery-item:hover::after { opacity: 1; }
-
-  /* Lightbox */
-  #lightbox {
-    position: fixed; inset: 0; z-index: 300;
-    background: rgba(14,13,11,0.98); backdrop-filter: blur(4px);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    opacity: 1; transition: opacity 0.3s; padding: 2rem;
-  }
-  #lightbox.hidden { opacity: 0; pointer-events: none; }
-  .lightbox-inner { display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; }
-  .lightbox-viewer { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; }
-  .lightbox-img {
-    max-width: 90%; max-height: 70vh; object-fit: contain;
-    transition: opacity 0.2s;
-  }
-  .lightbox-img.fade { opacity: 0; }
-  .lightbox-controls {
-    display: flex; align-items: center; justify-content: center; gap: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  .lightbox-btn {
-    width: 40px; height: 40px; border: 1px solid var(--border);
-    background: none; color: var(--gold); cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem; transition: border-color 0.2s, background 0.2s;
-  }
-  .lightbox-btn:hover { border-color: var(--gold); background: rgba(201,168,76,0.1); }
-  .lightbox-close { position: absolute; top: 2rem; right: 2rem; }
-  .lightbox-info { text-align: center; margin-top: 1rem; }
-  .lightbox-caption {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem; color: var(--gold-light); margin-bottom: 0.5rem;
-  }
-  .lightbox-counter {
-    font-size: 0.8rem; color: var(--muted); letter-spacing: 0.1em;
-  }
-  .lightbox-thumbs {
-    display: flex; gap: 0.75rem; justify-content: center;
-    overflow-x: auto; max-width: 100%; margin-top: 1.5rem;
-    padding: 0 2rem; scroll-behavior: smooth;
-  }
-  .lightbox-thumb {
-    width: 60px; height: 60px; object-fit: cover;
-    border: 1px solid var(--border); cursor: pointer;
-    opacity: 0.5; transition: opacity 0.2s, border-color 0.2s;
-    flex-shrink: 0;
-  }
-  .lightbox-thumb.active {
-    opacity: 1; border-color: var(--gold);
-  }
-  .lightbox-thumb:hover { opacity: 0.75; }
-
   /* ════════════════════════════════
      RESPONSIVE BREAKPOINTS
   ════════════════════════════════ */
@@ -481,7 +628,14 @@
     section { padding: 5rem 2.5rem; }
     #contact { padding: 5rem 2.5rem; }
     .bio-grid { gap: 3.5rem; }
-    .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+    .gallery-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 100%;
+    }
+    .gallery-item {
+      min-height: 120px;
+    }
     .videos-grid { grid-template-columns: repeat(2, 1fr); }
     .test-grid { grid-template-columns: repeat(2, 1fr); }
     footer { padding: 2rem 2.5rem; }
@@ -514,10 +668,85 @@
     .bio-stat-num { font-size: 1.8rem; }
     .bio-stat-label { font-size: 0.58rem; }
 
-    /* Gallery */
-    .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-    .lightbox-thumbs { padding: 0 1rem; }
-    .lightbox-thumb { width: 50px; height: 50px; }
+    /* Gallery — mobile */
+    .gallery-header {
+      max-width: 100%;
+      margin: 0 0 2rem 0;
+      display: block;
+      visibility: visible;
+    }
+
+    .gallery-header .section-label {
+      display: block;
+      visibility: visible;
+      opacity: 1;
+      color: var(--gold);
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .gallery-header .section-title {
+      display: block;
+      visibility: visible;
+      opacity: 1;
+      color: var(--ivory);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 2rem;
+    }
+
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      max-width: 100%;
+      margin: 0;
+    }
+
+    .gallery-item {
+      border-radius: 8px;
+      min-height: 140px;
+      width: 100%;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      background: var(--mid);
+    }
+
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .lightbox-prev,
+    .lightbox-next {
+      width: 40px;
+      height: 40px;
+      font-size: 1.2rem;
+      left: 1rem !important;
+      right: auto !important;
+    }
+
+    .lightbox-next {
+      left: auto !important;
+      right: 1rem !important;
+    }
+
+    .lightbox-close {
+      top: 1rem;
+      right: 1rem;
+      width: 40px;
+      height: 40px;
+      font-size: 1.6rem;
+    }
+
+    .lightbox-thumbs {
+      padding: 0 1rem 0.5rem 1rem;
+    }
 
     /* Videos — single col */
     .videos-grid { grid-template-columns: 1fr; gap: 1.5rem; }
@@ -566,6 +795,59 @@
     .btn-primary { padding: 0.8rem 1.6rem; font-size: 0.68rem; }
 
     .section-title { font-size: clamp(1.7rem, 8vw, 2.4rem); }
+
+    /* Gallery — small mobile */
+    .gallery-header {
+      max-width: 100%;
+      margin: 0 0 2rem 0;
+      display: block;
+      visibility: visible;
+    }
+
+    .gallery-header .section-label {
+      display: block;
+      visibility: visible;
+      opacity: 1;
+      color: var(--gold);
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .gallery-header .section-title {
+      display: block;
+      visibility: visible;
+      opacity: 1;
+      color: var(--ivory);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 2rem;
+    }
+
+    .gallery-grid {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      max-width: 100%;
+      margin: 0;
+    }
+
+    .gallery-item {
+      min-height: 160px;
+      width: 100%;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      background: var(--mid);
+    }
+
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
     .bio-stats { grid-template-columns: repeat(3, 1fr); }
 
@@ -661,43 +943,94 @@
 
 <!-- GALLERY -->
 <section id="gallery">
-  <div class="gallery-layout">
-    <div class="gallery-header">
-      <span class="section-label">Photo Gallery</span>
-      <h2 class="section-title">Performance Highlights</h2>
-    </div>
-    <div class="gallery-grid">
-      <div class="gallery-item" data-caption="Concert Performance">
-        <img src="https://i.postimg.cc/xqVc7pxD/B10.jpg?w=400&q=80" alt="Concert Performance 1">
-      </div>
-      <div class="gallery-item" data-caption="Rehearsal Session">
-        <img src="https://i.postimg.cc/sxxvxVJr/libertango.jpg?w=400&q=80" alt="Rehearsal Session">
-      </div>
-      <div class="gallery-item" data-caption="The Piano - Channel 4">
-        <img src="https://i.postimg.cc/QCCHCXJR/thepiano.jpg?w=400&q=80" alt="Channel 4 Performance">
-      </div>
-      <div class="gallery-item" data-caption="Solo Performance">
-        <img src="https://i.postimg.cc/cCCrCscZ/liszt.jpg?w=400&q=80" alt="Solo Concert">
-      </div>
-      <div class="gallery-item" data-caption="JP Morgan Music Evening">
-        <img src="https://i.postimg.cc/2yyVyzxf/jpm.jpg?w=400&q=80" alt="JP Morgan Event">
-      </div>
-      <div class="gallery-item" data-caption="Practice Session">
-        <img src="https://i.postimg.cc/QCCHCXqL/berceuse.jpg?w=400&q=80" alt="Practice Session">
-      </div>
-      <div class="gallery-item" data-caption="Festival Performance">
-        <img src="https://i.postimg.cc/GttHtcjn/etude.jpg?w=400&q=80" alt="Festival Performance">
-      </div>
-      <div class="gallery-item" data-caption="Ensemble Performance">
-        <img src="https://i.postimg.cc/PJJPJtQ0/sixhands.jpg?w=400&q=80" alt="Ensemble Performance">
-      </div>
-      <div class="gallery-item" data-caption="Hong Kong City Hall">
-        <img src="https://i.postimg.cc/j22L2s4p/smsa.jpg?w=400&q=80" alt="City Hall Performance">
-      </div>
-    </div>
+  <div class="gallery-header">
+    <span class="section-label">Photo Gallery</span>
+    <h2 class="section-title">On Stage &amp; Behind the Scenes</h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item"><img src="https://i.postimg.cc/wjJk7S8k/A1.jpg" alt="Performance at concert hall" data-caption="On stage performance" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/tJxsBGzc/A2.jpg" alt="Backstage moment" data-caption="Backstage preparation" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/7h25KrNW/A3.jpg" alt="Studio session" data-caption="Studio recording" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/7h25KrNB/B1.jpg" alt="Concert performance" data-caption="Concert recital" loading="lazy"></div>
+
+    <div class="gallery-item"><img src="https://i.postimg.cc/Hnyr61tv/B2.jpg" alt="Live performance" data-caption="Live concert moment" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/7brfctBB/B3.jpg" alt="Performance" data-caption="Piano performance" loading="lazy"></div>
+
+    <div class="gallery-item"><img src="https://i.postimg.cc/141fT7WY/B4.jpg" alt="Portrait at piano" data-caption="At the keys" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/jCYL938M/B5.jpg" alt="Performance shot" data-caption="Performance moment" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/MXJv43sP/B6.jpg" alt="Concert hall" data-caption="Concert setting" loading="lazy"></div>
+
+    <div class="gallery-item"><img src="https://i.postimg.cc/nMfC5SdW/B7.jpg" alt="Piano performance" data-caption="Piano recital" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/3WQd6fSh/B8.jpg" alt="Performance" data-caption="Stage performance" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/dDcLXNHM/B9.jpg" alt="Grand piano performance" data-caption="Grand piano moment" loading="lazy"></div>
+
+    <div class="gallery-item"><img src="https://i.postimg.cc/xqVc7pxD/B10.jpg" alt="Portrait" data-caption="Portrait shot" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/xqVc7pxV/C1.jpg" alt="Performance" data-caption="Concert performance" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/s1Cv8H6R/C2-092018.jpg" alt="Event" data-caption="Performance event" loading="lazy"></div>
+
+    <div class="gallery-item"><img src="https://i.postimg.cc/F1X7qCWN/C3-092018.jpg" alt="Concert" data-caption="Concert moment" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/jCYL93gS/C4-112018.jpg" alt="Performance" data-caption="Performance shot" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/XX6ph1Hn/C5-122019.jpg" alt="Event" data-caption="Event performance" loading="lazy"></div>
+
+    <div class="gallery-item"><img src="https://i.postimg.cc/WtchKYWb/C6-092021.jpg" alt="Concert" data-caption="Concert recital" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/mhWtqpXD/C7.jpg" alt="Performance" data-caption="Piano performance" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/66y1fWDY/C8.jpg" alt="Concert hall" data-caption="Concert hall performance" loading="lazy"></div>
+
+    <div class="gallery-item"><img src="https://i.postimg.cc/YjBhVDn0/D1.jpg" alt="Performance" data-caption="Performance moment" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/BZXwBSdh/D2.jpg" alt="Concert" data-caption="Concert shot" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/QNHnJ8R4/D3.jpg" alt="Performance" data-caption="Performance art" loading="lazy"></div>
+
+    <div class="gallery-item"><img src="https://i.postimg.cc/jqLk4xpV/D4.jpg" alt="Concert" data-caption="Concert recital" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/dQLSjsbF/D5.jpg" alt="Performance" data-caption="Performance shot" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/KcRsDG6S/D6.jpg" alt="Event" data-caption="Event moment" loading="lazy"></div>
+
+    <div class="gallery-item"><img src="https://i.postimg.cc/zDVPFz99/E1.jpg" alt="Concert" data-caption="Concert performance" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/QNwY4LDj/E2.jpg" alt="Performance" data-caption="Performance moment" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/J7Gd5rft/E3.jpg" alt="Piano" data-caption="Piano moment" loading="lazy"></div>
+
+    <div class="gallery-item"><img src="https://i.postimg.cc/NGSCJhtY/F1.jpg" alt="Concert" data-caption="Concert shot" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/05FXWgvj/F2.jpg" alt="Performance" data-caption="Performance art" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/ZY2s7km0/F3.jpg" alt="Event" data-caption="Event performance" loading="lazy"></div>
+
+    <div class="gallery-item"><img src="https://i.postimg.cc/QNwY4LDH/F4.jpg" alt="Concert" data-caption="Concert recital" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/tRwvS0bR/F5.jpg" alt="Performance" data-caption="Performance moment" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/G3Vg70RD/F6.jpg" alt="Piano" data-caption="Piano performance" loading="lazy"></div>
+
+    <div class="gallery-item"><img src="https://i.postimg.cc/y6tpQqKF/F7.jpg" alt="Concert" data-caption="Concert shot" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/qBSDbfrX/F8.jpg" alt="Performance" data-caption="Performance art" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/fWpq24sf/F9.jpg" alt="Event" data-caption="Event moment" loading="lazy"></div>
+
+    <div class="gallery-item"><img src="https://i.postimg.cc/kXS1LjM8/G1.jpg" alt="Concert" data-caption="Concert performance" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/ncmRNdVB/G2.jpg" alt="Performance" data-caption="Performance moment" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/fTd21HW9/G3.jpg" alt="Piano" data-caption="Piano recital" loading="lazy"></div>
+
+    <div class="gallery-item"><img src="https://i.postimg.cc/L6PCGy4T/G4.jpg" alt="Concert" data-caption="Concert shot" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/dtCHgWQn/G5.jpg" alt="Performance" data-caption="Performance art" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/tC6S8rRv/G6.jpg" alt="Event" data-caption="Event performance" loading="lazy"></div>
+
+    <div class="gallery-item"><img src="https://i.postimg.cc/qMKbWmBb/G7.jpg" alt="Concert" data-caption="Concert recital" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/Qx74v6Nw/G8.jpg" alt="Performance" data-caption="Performance moment" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://i.postimg.cc/jdfgB8qp/G9.jpg" alt="Piano" data-caption="Piano performance" loading="lazy"></div>
   </div>
 </section>
 
+<!-- LIGHTBOX -->
+
+<div id="lightbox" class="lightbox hidden">
+  <button class="lightbox-close" aria-label="Close gallery">&times;</button>
+  <button class="lightbox-prev" aria-label="Previous image">‹</button>
+
+  <div class="lightbox-content">
+    <img class="lightbox-img" alt="">
+    <div class="lightbox-info">
+      <div class="lightbox-caption"></div>
+      <div class="lightbox-counter"></div>
+    </div>
+    <div class="lightbox-thumbs"></div>
+  </div>
+
+  <button class="lightbox-next" aria-label="Next image">›</button>
+</div>
 <!-- VIDEOS -->
 <section id="videos">
   <div class="videos-header">
@@ -1728,25 +2061,6 @@
  -->
   </div>
 </footer>
-
-<!-- LIGHTBOX -->
-<div id="lightbox" class="hidden">
-  <div class="lightbox-inner">
-    <button class="lightbox-btn lightbox-close">✕</button>
-    <div class="lightbox-viewer">
-      <img src="" alt="" class="lightbox-img">
-    </div>
-    <div class="lightbox-info">
-      <div class="lightbox-caption"></div>
-      <div class="lightbox-counter"></div>
-    </div>
-    <div class="lightbox-controls">
-      <button class="lightbox-btn lightbox-prev">‹</button>
-      <button class="lightbox-btn lightbox-next">›</button>
-    </div>
-    <div class="lightbox-thumbs"></div>
-  </div>
-</div>
 
 <script>
 document.querySelectorAll('.gallery-item[data-bg]').forEach(el => {
